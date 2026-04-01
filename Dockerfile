@@ -1,19 +1,17 @@
-FROM python:3.10-slim
+FROM nikolaik/python-nodejs:python3.10-nodejs19
 
-WORKDIR /app/
-
-# Added build-essential and python3-dev to compile GitHub packages
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    git \
-    curl \
-    ffmpeg \
-    build-essential \
-    python3-dev \
-    && rm -rf /var/lib/apt/lists/*
+RUN rm -f /etc/apt/sources.list.d/yarn.list && \
+    sed -i 's|http://deb.debian.org/debian|http://archive.debian.org/debian|g' /etc/apt/sources.list && \
+    sed -i '/security.debian.org/d' /etc/apt/sources.list && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends ffmpeg aria2 && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 COPY . /app/
+WORKDIR /app/
 
-RUN pip install --upgrade pip && \
-    pip install --no-cache-dir -U -r requirements.txt
+RUN python -m pip install --no-cache-dir --upgrade pip
+RUN pip3 install --no-cache-dir --upgrade --requirement requirements.txt
 
-CMD ["bash", "start.sh"]
+CMD bash start
