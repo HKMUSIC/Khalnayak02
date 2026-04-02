@@ -17,7 +17,7 @@ python-dotenv
 pymediainfo
 prettytable
 git+https://github.com/Itz-fork/py-trans.git
-pyrogram==2.0.106
+pyrofork
 tgcrypto
 reportlab
 cairosvg      # OK
